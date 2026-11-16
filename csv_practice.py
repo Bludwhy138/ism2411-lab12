@@ -1,19 +1,21 @@
-import csv
+import csv 
 
-total_revenue = 0
+summary = {}
 
-with open("data/sales.csv", "r") as file:
+with open ("data/sales.csv", "r") as file:
     reader = csv.DictReader(file)
 
-    for row in reader:
+    for row in reader: 
         product = row["product"]
         price = float(row["price"])
         quantity = int(row["quantity"])
 
         total = price * quantity
-        total_revenue += total
 
-        print(f"{product}: ${total:.2f}")
+        if product in summary: 
+            summary[product] += total 
+        else: 
+            summary[product] = total 
 
-print(f"\nTotal Revenue: ${total_revenue:.2f}")
-
+for product in sorted(summary):
+    print(f"{product}: ${summary[product]:.2f}")
