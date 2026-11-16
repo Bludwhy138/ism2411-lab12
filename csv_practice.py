@@ -1,21 +1,22 @@
-import csv 
+import csv
+from datetime import datetime
 
-summary = {}
+total_revenue = 0
 
-with open ("data/sales.csv", "r") as file:
+with open("data/sales.csv", "r") as file:
     reader = csv.DictReader(file)
 
     for row in reader: 
-        product = row["product"]
         price = float(row["price"])
         quantity = int(row["quantity"])
 
         total = price * quantity
+        total_revenue += total
 
-        if product in summary: 
-            summary[product] += total 
-        else: 
-            summary[product] = total 
+timestamp = datetime.now()
 
-for product in sorted(summary):
-    print(f"{product}: ${summary[product]:.2f}")
+with open("data/run_log.txt", "a") as logfile:
+    logfile.write(f"{timestamp} - Total Revenue: ${total_revenue:.2f}\n")
+
+    print("log entry added.")
+    print(f"total Revenue: ${total_revenue:.2f}")
