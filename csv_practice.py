@@ -1,28 +1,19 @@
-import csv 
+import csv
 
-original_rows = 0
-written_rows = 0
+total_revenue = 0
 
-with open("data/sales.csv", "r") as infile, open("data/cleaned.csv", "w", newline="") as outfile:
-    reader = csv.reader(infile)
-    writer = csv.writer(outfile)
-
-    next(reader)
-
-    writer.writerow(["Product", "Price", "Qty", "Total"])
+with open("data/sales.csv", "r") as file:
+    reader = csv.DictReader(file)
 
     for row in reader:
-        product = row[0]
-        price = float(row[1])
-        quantity = int(row[2])
+        product = row["product"]
+        price = float(row["price"])
+        quantity = int(row["quantity"])
 
         total = price * quantity
+        total_revenue += total
 
-        original_rows += 1
+        print(f"{product}: ${total:.2f}")
 
-        if total > 100:
-            writer.writerow([product, price, quantity, total])
-            written_rows += 1
+print(f"\nTotal Revenue: ${total_revenue:.2f}")
 
-print(f"Original Rows: {original_rows}")
-print(f"Rows Written: {written_rows}")
